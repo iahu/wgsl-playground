@@ -1,4 +1,10 @@
-export const main = async (VERT: string, FRAG = VERT) => {
+const vertex = `
+  @vertex fn main(@location(0) position: vec4f) -> @builtin(position) vec4f {
+    return position;
+  }
+`;
+
+export const setup = async (FRAG: string, VERT = vertex) => {
   const adapter = await navigator.gpu.requestAdapter();
   if (!adapter) throw Error('webgpu not found');
   const device = await adapter.requestDevice();
@@ -78,7 +84,6 @@ export const main = async (VERT: string, FRAG = VERT) => {
       module: device.createShaderModule({
         code: VERT,
       }),
-      entryPoint: 'vs',
       buffers: [
         {
           arrayStride: 2 * 4,
@@ -90,7 +95,6 @@ export const main = async (VERT: string, FRAG = VERT) => {
       module: device.createShaderModule({
         code: FRAG,
       }),
-      entryPoint: 'fs',
       targets: [
         {
           format,

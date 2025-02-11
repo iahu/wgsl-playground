@@ -2,12 +2,12 @@
 @group(0) @binding(1) var<uniform> frame: u32;
 
 @vertex
-fn vs(@location(0) pos: vec4f) -> @builtin(position) vec4f {
+fn vsMain(@location(0) pos: vec4f) -> @builtin(position) vec4f {
   return pos;
 }
 
 @fragment
-fn fs(@builtin(position) position: vec4f) -> @location(0) vec4f {
+fn fsMain(@builtin(position) position: vec4f) -> @location(0) vec4f {
   let st = vec2f(position.xy) / resolution;
 
   let frac = fract(st * 12);
