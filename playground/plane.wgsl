@@ -1,6 +1,6 @@
-@group(0) @binding(1) var<uniform> frame: u32;
+@group(0) @binding(1) var<uniform> time: f32;
 
 @fragment
 fn fsMain() -> @location(0) vec4f {
-  return vec4f(1, 0, 0, abs(sin(f32(frame) / 100.0)));
+  return vec4f((sin(time * 2) + 1) / 2, 0, 0, 1);
 }

@@ -10,7 +10,11 @@ Bun.serve({
     const url = new URL(request.url);
     if (url.pathname === '/') {
       const files = glob.scanSync({ cwd: './playground', onlyFiles: false });
-      const fileList = ['<ul>', [...files].map((file) => `<li><a href="./playground/${file}">${file}</a></li>`).join(''), '</ul>'].join('');
+      const fileList = [
+        '<ul style="list-style: none;padding: 0;">',
+        [...files].map((file) => `<li><a href="./playground/${file}">${file}</a></li>`).join(''),
+        '</ul>',
+      ].join('');
       return new Response(fileList, { headers: { 'Content-Type': 'text/html' } });
     }
 

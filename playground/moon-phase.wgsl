@@ -1,5 +1,4 @@
 @group(0) @binding(0) var<uniform> resolution: vec2f;
-@group(0) @binding(1) var<uniform> frame: u32;
 
 @vertex
 fn vsMain(@location(0) pos: vec4f) -> @builtin(position) vec4f {

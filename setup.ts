@@ -31,9 +31,16 @@ export const setup = async (FRAG: string, VERT = vertex) => {
     size: resolutionArray.byteLength,
     usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
   });
-  const frameArray = new Uint32Array([0]);
-  const frameBuffer = device.createBuffer({
-    size: resolutionArray.byteLength,
+
+  const timeArray = new Float32Array([0]);
+  const timeBuffer = device.createBuffer({
+    size: timeArray.byteLength,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+
+  const mouseArray = new Float32Array([-1, -1]);
+  const mouseBuffer = device.createBuffer({
+    size: mouseArray.byteLength,
     usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
   });
 
@@ -46,6 +53,11 @@ export const setup = async (FRAG: string, VERT = vertex) => {
       },
       {
         binding: 1,
+        visibility: GPUShaderStage.VERTEX | GPUShaderStage.FRAGMENT,
+        buffer: { type: 'uniform' },
+      },
+      {
+        binding: 2,
         visibility: GPUShaderStage.VERTEX | GPUShaderStage.FRAGMENT,
         buffer: { type: 'uniform' },
       },
@@ -66,9 +78,17 @@ export const setup = async (FRAG: string, VERT = vertex) => {
       {
         binding: 1,
         resource: {
-          buffer: frameBuffer,
+          buffer: timeBuffer,
           offset: 0,
-          size: frameArray.byteLength,
+          size: timeArray.byteLength,
+        },
+      },
+      {
+        binding: 2,
+        resource: {
+          buffer: mouseBuffer,
+          offset: 0,
+          size: mouseArray.byteLength,
         },
       },
     ],
@@ -116,12 +136,23 @@ export const setup = async (FRAG: string, VERT = vertex) => {
     },
   });
 
+  canvas.addEventListener(
+    'mousemove',
+    (e) => {
+      const { x, y } = canvas.getBoundingClientRect();
+      mouseArray.set([e.clientX - x, e.clientY - y], 0);
+    },
+    { passive: true, capture: true }
+  );
+
+  let startTime = Date.now();
   function frame() {
     resolutionArray.set([canvas.width, canvas.height], 0);
-    device.queue.writeBuffer(resolutionBuffer, 0, resolutionArray);
+    timeArray.set([(Date.now() - startTime) / 1000], 0);
 
-    frameArray.set([frameArray[0] + 1], 0);
-    device.queue.writeBuffer(frameBuffer, 0, frameArray);
+    device.queue.writeBuffer(resolutionBuffer, 0, resolutionArray);
+    device.queue.writeBuffer(timeBuffer, 0, timeArray);
+    device.queue.writeBuffer(mouseBuffer, 0, mouseArray);
 
     const commandEncoder = device.createCommandEncoder();
     const textureView = context.getCurrentTexture().createView();
