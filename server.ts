@@ -4,6 +4,8 @@ import indexPage from './index.html' with { type: 'text' };
 
 const glob = new Glob('**/*{.,.frag,}wgsl');
 
+const htmlRewriter = new HTMLRewriter();
+
 Bun.serve({
   port: 3000,
   async fetch(request) {
@@ -11,11 +13,18 @@ Bun.serve({
     if (url.pathname === '/') {
       const files = glob.scanSync({ cwd: './playground', onlyFiles: false });
       const fileList = [
-        '<ul style="list-style: none;padding: 0;">',
+        '<ul class="file-list">',
         [...files].map((file) => `<li><a href="./playground/${file}">${file}</a></li>`).join(''),
         '</ul>',
       ].join('');
-      return new Response(fileList, { headers: { 'Content-Type': 'text/html' } });
+
+      htmlRewriter.on('body', {
+        element(body) {
+          body.setInnerContent(`<div class="shaders"><h1>Shaders</h1>${fileList}</div>`, { html: true });
+        },
+      });
+
+      return new Response(htmlRewriter.transform(indexPage as string), { headers: { 'Content-Type': 'text/html' } });
     }
 
     const match = url.pathname.match(/^\/playground\/(.+)/);

@@ -3,16 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>wgpu playground</title>
+    <title>webGPU Playground</title>
     <style>
       body {
+        margin: 0;
+        padding: 0;
+        background: ghostwhite;
+        overflow: auto;
+      }
+
+      .playground {
         height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0;
-        padding: 0;
-        background: ghostwhite;
+      }
+
+      .shaders {
+        padding: 20px;
       }
 
       canvas {
@@ -29,10 +37,17 @@
           linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%, #eee 100%),
           linear-gradient(45deg, #eee 25%, white 25%, white 75%, #eee 75%, #eee 100%);
       }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
     </style>
   </head>
   <body>
-    <canvas id="canvas"></canvas>
+    <div class="playground">
+      <canvas id="canvas"></canvas>
+    </div>
     <script type="module">
       /* setupScript */
     </script>
