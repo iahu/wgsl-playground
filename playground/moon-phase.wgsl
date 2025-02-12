@@ -7,7 +7,8 @@ fn vsMain(@location(0) pos: vec4f) -> @builtin(position) vec4f {
 
 @fragment
 fn fsMain(@builtin(position) position: vec4f) -> @location(0) vec4f {
-  let st = vec2f(position.xy) / resolution;
+  var st = vec2f(position.xy) / resolution;
+  st.x = st.x * resolution.x / resolution.y;
 
   let frac = fract(st * 12);
   let dist = distance(frac, vec2f(0.5, 0.5));

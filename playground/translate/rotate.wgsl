@@ -5,6 +5,7 @@
 fn main(@builtin(position) pos: vec4f) -> @location(0) vec4f {
   let st = pos.xy / resolution;
   var ct = st * 2 - 1;
+  ct.x = ct.x * resolution.x / resolution.y;
 
   let rx1 = cos(time);
   let ry1 = sin(time);

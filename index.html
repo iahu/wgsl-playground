@@ -10,13 +10,8 @@
         padding: 0;
         background: ghostwhite;
         overflow: auto;
-      }
-
-      .playground {
+        width: 100vw;
         height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
       }
 
       .shaders {
@@ -25,8 +20,8 @@
 
       canvas {
         background: #666;
-        width: 400px;
-        height: 400px;
+        width: 100%;
+        height: 100%;
       }
       canvas.chessboard {
         background-position:
@@ -45,9 +40,7 @@
     </style>
   </head>
   <body>
-    <div class="playground">
-      <canvas id="canvas"></canvas>
-    </div>
+    <canvas id="canvas"></canvas>
     <script type="module">
       /* setupScript */
     </script>

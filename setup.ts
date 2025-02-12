@@ -136,19 +136,19 @@ export const setup = async (FRAG: string, VERT = vertex) => {
     },
   });
 
-  canvas.addEventListener(
-    'mousemove',
-    (e) => {
-      const { x, y } = canvas.getBoundingClientRect();
-      mouseArray.set([e.clientX - x, e.clientY - y], 0);
-    },
-    { passive: true, capture: true }
-  );
+  canvas.addEventListener('mousemove', (e) => {
+    const { x, y } = canvas.getBoundingClientRect();
+    mouseArray.set([e.clientX - x, e.clientY - y], 0);
+  });
 
-  let startTime = Date.now();
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+
   function frame() {
     resolutionArray.set([canvas.width, canvas.height], 0);
-    timeArray.set([(Date.now() - startTime) / 1000], 0);
+    timeArray.set([performance.now() / 1000], 0);
 
     device.queue.writeBuffer(resolutionBuffer, 0, resolutionArray);
     device.queue.writeBuffer(timeBuffer, 0, timeArray);

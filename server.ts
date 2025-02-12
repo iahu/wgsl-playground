@@ -11,10 +11,13 @@ Bun.serve({
   async fetch(request) {
     const url = new URL(request.url);
     if (url.pathname === '/') {
-      const files = glob.scanSync({ cwd: './playground', onlyFiles: false });
+      const files = Array.from(glob.scanSync({ cwd: './playground', onlyFiles: false }));
       const fileList = [
         '<ul class="file-list">',
-        [...files].map((file) => `<li><a href="./playground/${file}">${file}</a></li>`).join(''),
+        files
+          .sort()
+          .map((file) => `<li><a href="./playground/${file}">${file}</a></li>`)
+          .join(''),
         '</ul>',
       ].join('');
 
