@@ -18,15 +18,20 @@ fn main(@builtin(position) pos: vec4f) -> @location(0) vec4f {
   var ct = st * 2 - 1;
   ct.x = ct.x * resolution.x / resolution.y;
 
-  let day = time % 30;
-  let a = 0.8 - fract(time / 15) * 1.6;
-  let e = ellipse(ct, a, 0.8);
-  let c = circle(ct, 0.8);
-  let d = sign(day - 15);
+  let day = 30.0;
+  let t = time % day;
+  let r = 0.8;
+  let a = r - fract(2 * time / day) * 1.6;
+  let e = ellipse(ct, a, r);
+  let c = circle(ct, r);
+  let d = sign(t - day / 2);
   let s = sign(a);
-  let t = ct.x;
-  let cc = step(0, c);
+  let x = ct.x;
 
-  let m = step(0, d * s * min(s * t, max(c, e)));
-  return vec4f(0, 0, 0.3, 1) * cc + (vec4f(1, 1, 1, m) * m + (1 - m) * vec4f(vec3f(0.2), 1)) * (1 - cc);
+  let m = -max(c, d * s * min(s * x, max(c, e)));
+
+  return mix(
+    vec4f(0, 0, 0.3, 1),
+    mix(vec4f(0,0,0,1), vec4f(1, 1, 1, 1), step(0, m)), step(c, 0)
+  );
 }
