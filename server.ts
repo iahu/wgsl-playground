@@ -2,7 +2,7 @@ import { Glob } from 'bun';
 import path from 'path';
 import indexPage from './index.html' with { type: 'text' };
 
-const glob = new Glob('**/*{.,.frag,}wgsl');
+const glob = new Glob('**/*.{wgsl,frag.wgsl,ts,js}');
 
 const htmlRewriter = new HTMLRewriter();
 

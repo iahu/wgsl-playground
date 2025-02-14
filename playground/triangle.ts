@@ -16,7 +16,7 @@ const pipeline = device.createRenderPipeline({
   layout: 'auto',
   vertex: {
     module: device.createShaderModule({
-      code: `
+      code: `// wgsl
       @vertex
       fn vs (@builtin(vertex_index) vertexIndex: u32) -> @builtin(position) vec4f {
         let pos = array<vec2f, 3>(vec2f(-0.5, -0.5), vec2f(0.5, -0.5), vec2f(0, 0.5));
@@ -28,7 +28,7 @@ const pipeline = device.createRenderPipeline({
   },
   fragment: {
     module: device.createShaderModule({
-      code: `
+      code: `// wgsl
       @fragment
       fn fs() -> @location(0) vec4f {
         return vec4f(1.0, 0.0, 0.0, 1.0);
