@@ -1,4 +1,4 @@
-# webgpu playground
+# wgsl playground
 
 A toy Bun server of playing with webGPU shader language (wgsl).
 
